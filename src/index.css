@@ -1,13 +1,27 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  background-color: #ddd;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.input__form {
+  @apply bg-gray-50 border border-gray-300 text-gray-800 text-sm rounded-lg outline-pink-500 focus:ring-pink-500 focus:border-pink-500 block w-full p-1.5;
+}
+
+.input__msg-error {
+  @apply mt-1 text-xs text-red-600;
+}
+
+.btn__form {
+  @apply text-white bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm w-full px-5 py-1.5;
+}
+
+.btn__form-disabled {
+  @apply disabled:cursor-not-allowed disabled:bg-pink-400;
+}
+
+.btn__link {
+  @apply text-pink-700 hover:text-white border border-pink-700 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm py-1.5 text-center w-full;
 }
