@@ -27,14 +27,19 @@ const useForm = (initialForm, initialFormFocus) => {
             ...formFocus,
             [name]: false
         })
-    }
+    };
+
+    const creanForm = () => {
+        setForm(initialForm);
+    };
 
     return {
         form,
         handleChange,
         handleFocus,
         handleBlur,
-        formFocus
+        formFocus,
+        creanForm
     }
 
 }

@@ -1,7 +1,9 @@
 import React from 'react';
 import useForm from '../hooks/useForm';
 import useValidRegister from '../hooks/useValidRegister';
-
+import axios from '../utils/axios';
+import { useRegisterDispatch, useRegisterState } from '../context/register.context';
+import Alert from '../components/Alert';
 
 const initialForm = {
     name: "",
@@ -17,24 +19,46 @@ const initialFormFocus = {
     confirmPassword: false,
 };
 
-
 const Register = () => {
-    const { form, handleChange, handleFocus, handleBlur, formFocus } = useForm(initialForm, initialFormFocus);
+    const { form, handleChange, handleFocus, handleBlur, formFocus, creanForm } = useForm(initialForm, initialFormFocus);
     const { nameValid, emailValid, passwordValid, confirmPasswordValid } = useValidRegister(form);
+    const dispatch = useRegisterDispatch();
+    const { loading, errors, register } = useRegisterState();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
+            dispatch({ type: 'REGISTER_START' })
 
+            let options = {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json; charset=utf-8",
+                },
+                data: JSON.stringify(form),
+            };
+
+            const res = await axios('register', options);
+            if (res.data?.user) {
+                dispatch({ type: 'REGISTER_SUCCESS' });
+            };
+            creanForm();
         } catch (err) {
-
-        }
+            const error = err.response;
+            if (error?.data?.errors?.email) {
+                dispatch({ type: 'REGISTER_FAILURE', payload: error.data.errors.email })
+            } else {
+                dispatch({ type: 'REGISTER_FAILURE', payload: 'Ocurrió un error' });
+            }
+        };
     };
 
     return (
         <section className='min-h-full px-3'>
             <div className='max-w-md mx-auto mt-10 space-y-5'>
+                {errors && <Alert message={errors} type='msg__error' />}
+                {register && <Alert message='Se creo un nuevo usuario' type='msg__success' />}
                 <div className='flex justify-center'>
                     <p className='font-semibold text-lg'>
                         Crea tu cuenta
@@ -134,9 +158,10 @@ const Register = () => {
                     <div>
                         <button
                             className='btn__form btn__form-disabled'
-                            disabled={!nameValid || !emailValid || !passwordValid || !confirmPasswordValid}
+                            disabled={!nameValid || !emailValid || !passwordValid || !confirmPasswordValid || loading}
                         >
-                            Crea tu Cuenta
+                            {loading ? 'Cargando...' : 'Crea tu Cuenta'}
+
                         </button>
                     </div>
                 </form>
