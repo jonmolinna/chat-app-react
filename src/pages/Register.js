@@ -4,6 +4,7 @@ import useValidRegister from '../hooks/useValidRegister';
 import axios from '../utils/axios';
 import { useRegisterDispatch, useRegisterState } from '../context/register.context';
 import Alert from '../components/Alert';
+import { Link } from 'react-router-dom';
 
 const initialForm = {
     name: "",
@@ -167,9 +168,11 @@ const Register = () => {
                 </form>
                 <div className='bg-white px-3 py-4 space-y-2 shadow-md rounded-md'>
                     <p className='text-center'>¿Tienes una cuenta?</p>
-                    <button className='btn__link'>
-                        Inicia Sesión
-                    </button>
+                    <Link to='/login' className='block'>
+                        <button className='btn__link'>
+                            Inicia Sesión
+                        </button>
+                    </Link>
                 </div>
             </div>
         </section>

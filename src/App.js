@@ -1,19 +1,29 @@
-import { LoginProvider } from "./context/login.context";
-import { RegisterProvider } from "./context/register.context";
-import Login from "./pages/Login";
-// import Register from "./pages/Register";
-
+import { Routes, Route } from 'react-router-dom';
+import Layout from './Layout/Layout';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Home from './pages/Home';
+import Missing from './pages/Missing';
+import RequireAuth from './components/RequireAuth';
 
 function App() {
   return (
-    <div>
-      <RegisterProvider>
-        <LoginProvider>
-          {/* <Register /> */}
-          <Login />
-        </LoginProvider>
-      </RegisterProvider>
-    </div>
+    <Routes>
+      <Route path='/' element={<Layout />}>
+        {/* Rutas Publicas */}
+        <Route path='login' element={<Login />} />
+        <Route path='register' element={<Register />} />
+
+        {/* Rutas Privadas */}
+        <Route element={<RequireAuth />}>
+          <Route path='/' element={<Home />} />
+        </Route>
+
+        {/* Error 404 */}
+        <Route path='*' element={<Missing />} />
+
+      </Route>
+    </Routes>
   );
 };
 

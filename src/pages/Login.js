@@ -1,9 +1,11 @@
 import React from 'react';
 import useForm from '../hooks/useForm';
 import useValidLogin from '../hooks/useValidLogin';
-import { useLoginDispatch, useLoginState } from '../context/login.context';
+// import { useLoginDispatch, useLoginState } from '../context/login.context';
+import useAuth from '../hooks/useAuth';
 import axios from '../utils/axios';
 import Alert from '../components/Alert';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const initialForm = {
     email: '',
@@ -18,8 +20,14 @@ const initialFormFocus = {
 const Login = () => {
     const { form, handleChange, handleFocus, handleBlur, formFocus, creanForm } = useForm(initialForm, initialFormFocus);
     const { emailValid, passwordValid } = useValidLogin(form);
+    const { useLoginDispatch, useLoginState } = useAuth();
     const dispatch = useLoginDispatch();
     const { loading, errors } = useLoginState();
+    // const dispatch = useLoginDispatch();
+    // const { loading, errors } = useLoginState();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from.pathname || "/";
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -38,6 +46,7 @@ const Login = () => {
             const res = await axios('auth', options);
             dispatch({ type: 'LOGIN_SUCCESS', payload: { user: res.data?.user, token: res.data?.token } });
             creanForm();
+            navigate(from, { replace: true })
         } catch (err) {
             const error = err.response;
             if (error?.data?.errors?.message) {
@@ -119,13 +128,15 @@ const Login = () => {
                 </form>
                 <div className='bg-white px-3 py-4 space-y-2 shadow-md rounded-md'>
                     <p className='text-center'>¿Aún no tienes una cuenta?</p>
-                    <button className='btn__link'>
-                        Crea tu Cuenta
-                    </button>
+                    <Link to='/register' className='block'>
+                        <button className='btn__link'>
+                            Crea tu Cuenta
+                        </button>
+                    </Link>
                 </div>
             </div>
         </section>
     )
-}
+};
 
 export default Login;

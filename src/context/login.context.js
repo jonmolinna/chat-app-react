@@ -1,8 +1,12 @@
-import { createContext, useContext, useReducer } from 'react';
+// import { createContext, useContext, useReducer } from 'react';
+import { createContext, useReducer } from 'react';
 import loginReducer from './login.reducer';
 
-const LoginStateContext = createContext();
-const LoginDispatchContext = createContext();
+// const LoginStateContext = createContext();
+// const LoginDispatchContext = createContext();
+
+export const LoginDispatchContext = createContext();
+export const LoginStateContext = createContext();
 
 const initialState = {
     loading: false,
@@ -22,5 +26,5 @@ export const LoginProvider = ({ children }) => {
     )
 };
 
-export const useLoginState = () => useContext(LoginStateContext);
-export const useLoginDispatch = () => useContext(LoginDispatchContext);
+// export const useLoginState = () => useContext(LoginStateContext);
+// export const useLoginDispatch = () => useContext(LoginDispatchContext);
