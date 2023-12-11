@@ -33,3 +33,7 @@ html {
 .msg__success {
   @apply bg-green-100 text-green-800;
 }
+
+.message {
+  @apply text-base p-2 w-fit rounded-md bg-pink-600 text-white shadow-md;
+}

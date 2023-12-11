@@ -4,18 +4,12 @@ import Sidebar from '../components/Sidebar';
 
 const Home = () => {
     return (
-        <div className='max-w-5xl mx-auto h-[100vh] grid place-items-center'>
-            <div className='h-[90vh] shadow-md'>
-                <div className='grid grid-cols-12'>
-                    <div className='col-span-4'>
-                        <Sidebar />
-                    </div>
-                    <div className='col-span-8'>
-                        <Chat />
-                    </div>
-                </div>
+        <div className='h-[100vh] pt-5'>
+            <div className='flex w-full h-[90vh] max-w-5xl mx-auto shadow-md rounded-md overflow-hidden'>
+                <Sidebar />
+                <Chat />
             </div>
-        </div>
+        </div >
     )
 };
 
