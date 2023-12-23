@@ -8,9 +8,13 @@ const loginReducer = (state, action) => {
             }
         }
         case 'LOGIN_SUCCESS': {
+            const auth = action.payload
+            if (auth) {
+                localStorage.setItem('tokens', JSON.stringify(auth));
+            }
             return {
                 loading: false,
-                auth: action.payload,
+                auth,
                 errors: null,
             }
         }
@@ -19,6 +23,12 @@ const loginReducer = (state, action) => {
                 loading: false,
                 auth: null,
                 errors: action.payload,
+            }
+        }
+        case 'REFRESH_TOKEN': {
+            return {
+                ...state,
+                auth: action.payload
             }
         }
         case 'LOGOUT': {

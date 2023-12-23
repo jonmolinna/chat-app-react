@@ -5,6 +5,7 @@ import Register from './pages/Register';
 import Home from './pages/Home';
 import Missing from './pages/Missing';
 import RequireAuth from './components/RequireAuth';
+import PersistLogin from './components/PersistLogin';
 
 function App() {
   return (
@@ -15,8 +16,10 @@ function App() {
         <Route path='register' element={<Register />} />
 
         {/* Rutas Privadas */}
-        <Route element={<RequireAuth />}>
-          <Route path='/' element={<Home />} />
+        <Route element={<PersistLogin />}>
+          <Route element={<RequireAuth />}>
+            <Route path='/' element={<Home />} />
+          </Route>
         </Route>
 
         {/* Error 404 */}
