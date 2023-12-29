@@ -1,22 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import SidebarChat from './SidebarChat';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useUsersDispatch, useUsersState } from '../context/users.context';
 
 const Sidebar = () => {
-    const [chats, setChats] = useState(null);
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
     const location = useLocation();
+    const dispatch = useUsersDispatch();
+    const { users } = useUsersState();
 
     useEffect(() => {
         let isMounted = true;
 
         const getUsersChats = async () => {
             try {
-                const response = await axiosPrivate.get('/users');
-
-                isMounted && setChats(response.data.users);
+                dispatch({ type: 'GET_ALL_USERS_START' });
+                const res = await axiosPrivate.get('/users');
+                isMounted && dispatch({ type: 'GET_ALL_USERS_SUCCESS', payload: res.data.users })
             } catch (error) {
                 console.log('ERROR', error);
                 navigate('/login', { state: { from: location }, replace: true })
@@ -24,12 +26,11 @@ const Sidebar = () => {
         };
 
         getUsersChats();
-        console.log('HOLA SIDEBAR')
 
         return () => {
             isMounted = false;
         }
-    }, [axiosPrivate, location, navigate]);
+    }, [axiosPrivate, location, navigate, dispatch]);
 
     return (
         <div className='flex flex-col'>
@@ -43,8 +44,8 @@ const Sidebar = () => {
             </div>
             <div className='bg-gray-50 h-[80vh] min-w-min max-w-xs border-r-2 border-gray-200 overflow-y-scroll scrollbar-thin scrollbar-thumb-neutral-400'>
                 {
-                    chats && chats.map(chat => (
-                        <SidebarChat key={chat._id} chat={chat} />
+                    users && users.map(user => (
+                        <SidebarChat key={user._id} user={user} />
 
                     ))
                 }
