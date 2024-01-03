@@ -20,7 +20,6 @@ const Sidebar = () => {
                 const res = await axiosPrivate.get('/users');
                 isMounted && dispatch({ type: 'GET_ALL_USERS_SUCCESS', payload: res.data.users })
             } catch (error) {
-                console.log('ERROR', error);
                 navigate('/login', { state: { from: location }, replace: true })
             }
         };
