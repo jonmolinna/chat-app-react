@@ -3,6 +3,8 @@ import SidebarChat from './SidebarChat';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useUsersDispatch, useUsersState } from '../context/users.context';
+import useAuth from '../hooks/useAuth';
+import { CapitalizeLetter } from '../utils/capitalize.letter';
 
 const Sidebar = () => {
     const axiosPrivate = useAxiosPrivate();
@@ -10,6 +12,10 @@ const Sidebar = () => {
     const location = useLocation();
     const dispatch = useUsersDispatch();
     const { users } = useUsersState();
+    const { useLoginState } = useAuth();
+    const { auth } = useLoginState();
+
+    let { name } = auth?.user;
 
     useEffect(() => {
         let isMounted = true;
@@ -35,7 +41,7 @@ const Sidebar = () => {
         <div className='flex flex-col'>
             <div className='bg-pink-700 px-2 py-4 border-r-2 border-pink-800 flex justify-between items-center h-[10vh] space-x-2'>
                 <p className='hidden md:block text-white text-base font-light max-w-[17ch] truncate'>
-                    Emma Saez
+                    {CapitalizeLetter(name)}
                 </p>
                 <button className='text-white text-base font-light'>
                     Salir

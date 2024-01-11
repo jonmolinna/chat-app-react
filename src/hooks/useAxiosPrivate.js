@@ -16,8 +16,17 @@ const useAxiosPrivate = () => {
             }, (error) => Promise.reject(error)
         );
 
+        const responseIntercept = axiosPrivate.interceptors.response.use(
+            response => {
+                // console.log(response.config.data)
+                return response
+            }
+            // response => response
+        )
+
         return () => {
             axiosPrivate.interceptors.request.eject(requestIntercept);
+            axiosPrivate.interceptors.response.eject(responseIntercept)
         }
 
     }, [auth])
