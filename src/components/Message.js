@@ -1,10 +1,19 @@
 import React from 'react';
+import moment from 'moment';
+import 'moment/locale/es';
+import useAuth from '../hooks/useAuth';
 
-const Message = () => {
+const Message = ({ message }) => {
+    const { useLoginState } = useAuth();
+    const { auth } = useLoginState();
+    let isUsername = message.from === auth?.user.id;
+
     return (
-        <p className='message'>
-            this is a message
-            <span className='ml-2 text-xs'>6-12-23</span>
+        <p className={`message ${isUsername && 'message__recived'}`}>
+            {message.message}
+            <span className='ml-2 text-xs'>
+                {moment(message.createdAt).format('l @ LT')}
+            </span>
         </p>
     )
 };

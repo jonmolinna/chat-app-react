@@ -35,5 +35,9 @@ html {
 }
 
 .message {
-  @apply text-base p-2 w-fit rounded-md bg-pink-600 text-white shadow-md;
+  @apply text-base p-2 w-fit rounded-md bg-gray-200 text-black shadow-md;
+}
+
+.message__recived {
+  @apply bg-pink-500 text-white ml-auto;
 }

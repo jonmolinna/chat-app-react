@@ -33,13 +33,15 @@ const ChatMessages = () => {
     }, [axiosPrivate, to, location, navigate]);
 
     return (
-        <div className='p-4 space-y-2'>
+        <div className='p-4 space-y-5'>
             {
                 messages.length > 0 ? messages.map(message => (
-                    <Message />
+                    <Message message={message} key={message._id} />
                 )) : (
-                    <div>
-                        <p>No tienes messages</p>
+                    <div className='flex justify-center'>
+                        <p className='bg-pink-500 text-white px-3 py-1 rounded-md'>
+                            No tienes messages
+                        </p>
                     </div>
                 )
             }
