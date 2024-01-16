@@ -20,6 +20,7 @@ const ChatInput = () => {
                 message,
                 to: user?._id,
             });
+            setMessage("");
         } catch (err) {
             navigate('/login', { state: { from: location }, replace: true })
         }

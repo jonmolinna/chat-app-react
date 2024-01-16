@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useUsersDispatch, useUsersState } from '../context/users.context';
 import useAuth from '../hooks/useAuth';
 import { CapitalizeLetter } from '../utils/capitalize.letter';
+import useLogout from '../hooks/useLogout';
 
 const Sidebar = () => {
     const axiosPrivate = useAxiosPrivate();
@@ -14,6 +15,7 @@ const Sidebar = () => {
     const { users } = useUsersState();
     const { useLoginState } = useAuth();
     const { auth } = useLoginState();
+    const logout = useLogout();
 
     let { name } = auth?.user;
 
@@ -43,7 +45,7 @@ const Sidebar = () => {
                 <p className='hidden md:block text-white text-base font-light max-w-[17ch] truncate'>
                     {CapitalizeLetter(name)}
                 </p>
-                <button className='text-white text-base font-light'>
+                <button className='text-white text-base font-light' onClick={() => logout()}>
                     Salir
                 </button>
             </div>

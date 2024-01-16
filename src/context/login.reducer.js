@@ -32,6 +32,7 @@ const loginReducer = (state, action) => {
             }
         }
         case 'LOGOUT': {
+            localStorage.removeItem('tokens');
             return {
                 loading: false,
                 auth: null,

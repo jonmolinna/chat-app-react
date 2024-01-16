@@ -30,6 +30,14 @@ const usersReducer = (state, action) => {
                 user: action.payload,
             }
         }
+        case 'RESET_USERS': {
+            return {
+                loading: false,
+                users: null,
+                errors: null,
+                user: null,
+            }
+        }
         default:
             return state
     }
