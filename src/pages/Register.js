@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import useForm from '../hooks/useForm';
 import useValidRegister from '../hooks/useValidRegister';
 import axios from '../utils/axios';
@@ -25,6 +25,7 @@ const Register = () => {
     const { nameValid, emailValid, passwordValid, confirmPasswordValid } = useValidRegister(form);
     const dispatch = useRegisterDispatch();
     const { loading, errors, register } = useRegisterState();
+    const [isMounted, setIsMounted] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -41,6 +42,7 @@ const Register = () => {
             };
 
             const res = await axios('register', options);
+            setIsMounted(true);
             if (res.data?.user) {
                 dispatch({ type: 'REGISTER_SUCCESS' });
             };
@@ -55,11 +57,17 @@ const Register = () => {
         };
     };
 
+    useEffect(() => {
+        return () => {
+            setIsMounted(false);
+        }
+    }, []);
+
     return (
         <section className='min-h-full px-3'>
             <div className='max-w-md mx-auto mt-10 space-y-5'>
-                {errors && <Alert message={errors} type='msg__error' />}
-                {register && <Alert message='Se creo un nuevo usuario' type='msg__success' />}
+                {errors && isMounted && <Alert message={errors} type='msg__error' />}
+                {register && isMounted && <Alert message='Se creo un nuevo usuario' type='msg__success' />}
                 <div className='flex justify-center'>
                     <p className='font-semibold text-lg'>
                         Crea tu cuenta

@@ -3,6 +3,14 @@ import Message from './Message';
 import { useUsersState } from '../context/users.context';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 import { useNavigate, useLocation } from 'react-router-dom';
+import Pusher from 'pusher-js';
+
+const pusher = new Pusher(
+    '4d05166e3649e2a2ed3f',
+    {
+        cluster: 'us2'
+    }
+);
 
 const ChatMessages = () => {
     const [messages, setMessages] = useState([])
@@ -13,6 +21,7 @@ const ChatMessages = () => {
     const location = useLocation();
 
     useEffect(() => {
+        pusher.unsubscribe('messages');
         let isMounted = true;
 
         const getAllMessageByTo = async () => {
@@ -25,6 +34,11 @@ const ChatMessages = () => {
         };
 
         getAllMessageByTo();
+
+        const channel = pusher.subscribe('messages');
+        channel.bind('newMessage', function (data) {
+            getAllMessageByTo()
+        });
 
         return () => {
             isMounted = false;

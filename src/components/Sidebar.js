@@ -6,6 +6,14 @@ import { useUsersDispatch, useUsersState } from '../context/users.context';
 import useAuth from '../hooks/useAuth';
 import { CapitalizeLetter } from '../utils/capitalize.letter';
 import useLogout from '../hooks/useLogout';
+import Pusher from 'pusher-js';
+
+const pusher = new Pusher(
+    '4d05166e3649e2a2ed3f',
+    {
+        cluster: 'us2'
+    },
+);
 
 const Sidebar = () => {
     const axiosPrivate = useAxiosPrivate();
@@ -16,7 +24,6 @@ const Sidebar = () => {
     const { useLoginState } = useAuth();
     const { auth } = useLoginState();
     const logout = useLogout();
-
     let { name } = auth?.user;
 
     useEffect(() => {
@@ -24,7 +31,6 @@ const Sidebar = () => {
 
         const getUsersChats = async () => {
             try {
-                dispatch({ type: 'GET_ALL_USERS_START' });
                 const res = await axiosPrivate.get('/users');
                 isMounted && dispatch({ type: 'GET_ALL_USERS_SUCCESS', payload: res.data.users })
             } catch (error) {
@@ -33,6 +39,11 @@ const Sidebar = () => {
         };
 
         getUsersChats();
+
+        const channel = pusher.subscribe('messages');
+        channel.bind('newMessage', function (data) {
+            getUsersChats();
+        });
 
         return () => {
             isMounted = false;
@@ -53,7 +64,6 @@ const Sidebar = () => {
                 {
                     users && users.map(user => (
                         <SidebarChat key={user._id} user={user} />
-
                     ))
                 }
             </div>
